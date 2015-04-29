@@ -1,0 +1,26 @@
+{
+  "name": "recipe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "recipe_schema.js",
+  "dependencies": {
+    "hapi": "^8.4.0",
+    "mongodb": "~2.0.28",
+    "mongoose": "~4.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JiangMinyang/recipe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JiangMinyang/recipe/issues"
+  },
+  "homepage": "https://github.com/JiangMinyang/recipe"
+}
