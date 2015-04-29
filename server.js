@@ -14,15 +14,16 @@ server.route({
 	method	:	"GET",
 	path	:	"/api/recipe/{id}",
 	handler	:	function(request, response) {
-		/*
 		var ID = request.params.id;
 		console.log(ID);
 		var query = Recipe.find().where('_id', ID);
 		query.exec(function(err, doc) {
-			if (err) return console.log(err);
+			if (err) {
+				response("Can't find the recipe");
+				return console.log("Get recipe Failed");
+			}
 			response(doc, 200);
 		});
-		*/
 	}
 });
 server.route({
@@ -40,7 +41,12 @@ server.route({
 	handler	:	function(request, response) {
 		var query = request.query;
 		console.log(query);
-		response('!!!');
+		query.date = new Date().toString();
+		var recipe = new Recipe(query);
+		recipe.save(function(err, doc) {
+			console.log("Recipe Added");
+			response(doc._id);
+		});
 	}
 
 });
@@ -57,7 +63,15 @@ server.route({
 	method	:	"DELETE",
 	path	:	"/api/recipe/{id}",
 	handler	:	function(request, response) {
-
+		var ID = request.params.id;
+		var query = Recipe.remove().where('_id', ID);
+		query.exec(function(err, results) {
+			if (err) {
+				response("Can't delete recipe", 400);
+				return console.log('delete failed');
+			}
+			response("Delete Succeed", 200);
+		});
 	}
 });
 
