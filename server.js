@@ -47,8 +47,11 @@ server.route({
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;
+		query.added = new Date().toString();
+		query.ingredients = [];
+		for(var i = 0; i < query.qty.length; i++)
+		query.ingredients.push({qty : query.qty[i], units : query.unit[i], ingredient : query.ingredient[i] } );
 		console.log(query);
-		query.date = new Date().toString();
 		var recipe = new Recipe(query);
 		recipe.save(function(err, doc) {
 			console.log("Recipe Added");
