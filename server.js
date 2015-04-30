@@ -9,6 +9,13 @@ var Recipe = mongoose.model('Recipe', recipeSchema, 'recipe');
 
 server.connection({port : 8080});
 
+server.route({
+	method	: "GET",
+	path	: "/",
+	handler : function(request, response) {
+		response.file(index.html);
+	}
+});
 
 server.route({
 	method	:	"GET",
