@@ -4,16 +4,24 @@ var mongoose = require('mongoose');
 var server = new hapi.Server();
 
 var db = mongoose.connect('mongodb://localhost/test');
-var recipeSchema = require('./recipe_schema.js').recipeSchema;
+var recipeSchema = require('./scripts/recipe_schema.js').recipeSchema;
 var Recipe = mongoose.model('Recipe', recipeSchema, 'recipe');
 
 server.connection({port : 8080});
 
 server.route({
 	method	: "GET",
-	path	: "/",
+	path	: "/recipes",
 	handler : function(request, response) {
 		response.file('index.html');
+	}
+});
+
+server.route({
+	method	: "GET",
+	path	: "/recipes/recipename",
+	handler	: function(request, response) {
+		response.file('./html/recipes.html');
 	}
 });
 
@@ -71,6 +79,10 @@ server.route({
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;
+		if (!('titel' in query)) {
+			response("", 400);
+			return console.log("Nothing Added");
+		}
 		query.added = new Date().toString();
 
 		query.ingredients = [];
@@ -81,10 +93,13 @@ server.route({
 		
 		query.tags = [];
 		if ('tag' in query) {
+			if (typeof(query.tag) == 'string') query.tags[0] = query.tag;
+			else {
 			for(var i = 0; i < query.tag.length; i++)
 				query.tags[i] = query.tag[i];
+			}
 		}
-
+		console.log(query);
 		var recipe = new Recipe(query);
 		recipe.save(function(err, doc) {
 			console.log("Recipe Added");
