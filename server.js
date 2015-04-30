@@ -33,12 +33,36 @@ server.route({
 		});
 	}
 });
+
 server.route({
 	method	:	"GET",
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
-		//console.log(request.query);
-		response("hello");
+		var query = request.query;
+		var Docs = Recipe.find();
+		var amount = 0;
+	//	console.log(query);
+		if ('amount' in query) {
+			amount = query.amount;
+		}
+		else amount = 10;
+		var page = 1;
+		if ('page' in query) page = query.page;
+		Docs.skip(amount * (page - 1));
+		Docs.limit(amount);
+		if ('title' in query) {
+			Docs.where('title', query.title);
+		}	
+		if ('tag' in query) {
+			Docs.all('tags', query.tag);
+		}
+		Docs.exec(function(err, docs) {
+			if (err) {
+				response("", 400);
+				return console.log(err);
+			}
+			response(docs);
+		});
 	}
 });
 
@@ -58,7 +82,7 @@ server.route({
 		query.tags = [];
 		if ('tag' in query) {
 			for(var i = 0; i < query.tag.length; i++)
-				query.tags = query.tag[i];
+				query.tags[i] = query.tag[i];
 		}
 
 		var recipe = new Recipe(query);
@@ -73,10 +97,39 @@ server.route({
 	method	:	"PUT",
 	path	:	"/api/recipe/{id}",
 	handler	:	function(request, response) {
+		var ID = request.params.id;
+		var query = request.query;
+		var updateDoc = Recipe.find().where('_id', ID);
+		query.ingredients = [];
+		if ('qty' in query) {
+			for(var i = 0; i < query.qty.length; i++)
+				query.ingredients.push({qty : query.qty[i], units : query.unit[i], ingredient : query.ingredient[i] } );
+		}
+		
+		query.tags = [];
+		if ('tag' in query) {
+			for(var i = 0; i < query.tag.length; i++)
+				query.tags[i] = query.tag[i];
+		}
 
+		console.log(query);
+		updateDoc.exec(function(err, result) {
+			if (err) {
+				response("Can't update this doc");
+				return console.log(err);
+			}
+			console.log(result[0]);
+			result[0].update(query, {w : 1}, function(err, result) {
+				if (err) {
+					response("Can't update this doc");
+					return console.log(err);
+				}	
+				response("Update succeed");
+			});
+		});
 	}
-
 });
+
 server.route({
 	method	:	"DELETE",
 	path	:	"/api/recipe/{id}",
