@@ -13,7 +13,7 @@ server.route({
 	method	: "GET",
 	path	: "/",
 	handler : function(request, response) {
-		response.file(index.html);
+		response.file('index.html');
 	}
 });
 
@@ -48,17 +48,25 @@ server.route({
 	handler	:	function(request, response) {
 		var query = request.query;
 		query.added = new Date().toString();
+
 		query.ingredients = [];
-		for(var i = 0; i < query.qty.length; i++)
-		query.ingredients.push({qty : query.qty[i], units : query.unit[i], ingredient : query.ingredient[i] } );
-		console.log(query);
+		if ('qty' in query) {
+			for(var i = 0; i < query.qty.length; i++)
+				query.ingredients.push({qty : query.qty[i], units : query.unit[i], ingredient : query.ingredient[i] } );
+		}
+		
+		query.tags = [];
+		if ('tag' in query) {
+			for(var i = 0; i < query.tag.length; i++)
+				query.tags = query.tag[i];
+		}
+
 		var recipe = new Recipe(query);
 		recipe.save(function(err, doc) {
 			console.log("Recipe Added");
 			response(doc._id);
 		});
 	}
-
 });
 
 server.route({
