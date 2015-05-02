@@ -72,6 +72,9 @@ server.route({
 		if ('tag' in query) {
 			Docs.all('tags', query.tag);
 		}
+		if ('sort' in query) {
+			Docs.sort(query.sort);
+		}
 		Docs.exec(function(err, docs) {
 			if (err) {
 				response("", 400);
@@ -81,9 +84,8 @@ server.route({
 		});
 	}
 });
-
 server.route({
-	method	:	"POST",
+ 	method	:	"POST",
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;

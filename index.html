@@ -25,11 +25,18 @@
 		</tr>
 	</table>
 	<div>
-		<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results</h4> <br>
+		<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results</h4> 
+		<p> Sort by
+		<select ng-init="sorting='title'" ng-change="sortByKey()" ng-model="sorting">
+				<option value="title">title</option>
+				<option value="time">time</option>
+				<option value="added">added</option>
+		</select> </p>  <br>
 		<ul>
 			<li ng-repeat="recipe in searchResults">
 				<p> Title: {{ recipe.title }} </p> 
-				<p> Time : {{ recipe.added }} </p>
+				<p> Cooking Time  : {{ recipe.time }} </p>
+				<p> Added Time : {{ recipe.added }} </p>
 			</li>
 		</ul>
 	</div>
