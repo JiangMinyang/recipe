@@ -2,29 +2,38 @@
 <html>
 <head>
 	<title>Recipe Manager</title>
+	<script src="./scripts/angular.min.js"></script>
 </head>
 <body ng-app="recipeManager" ng-controller="recipeCtrl">
 	<h1 align="center">Recipe Manager</h1>
-	<table align="left" style="width : 20%">
+	<table align="left" style="width : 100%">
 		<tr>
 			<td></td>
 			<td><h3>Search</h3></td>
 		</tr>
 		<tr>
-			<td style="width : 50%">Title</td>
-			<td><input type="text" ng-model='title'></td>
+			<td style="width : 10%">Title</td>
+			<td stype="width : 10%"><input type="text" ng-model='title'></td>
 		</tr>
 		<tr>
 			<td>Tags</td>
-			<td><input type="text" ng-model='Tags'></td>
+			<td><input type="text" ng-model='tags'></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="button" value="Search" ng-click="Search"></td>
+			<td><input type="button" value="Search" ng-click="Search()"></td>
 		</tr>
 	</table>
+	<div>
+		<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results</h4> <br>
+		<ul>
+			<li ng-repeat="recipe in searchResults">
+				<p> Title: {{ recipe.title }} </p> 
+				<p> Time : {{ recipe.added }} </p>
+			</li>
+		</ul>
+	</div>
+	<script src="./scripts/recipeCtrl.js"></script>
 
-	<script src="./script/recipeCtrl.js"></script>
-	<script src="./script/angular.min.js"></script>
 </body>
 </html>

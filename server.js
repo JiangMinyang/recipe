@@ -26,6 +26,14 @@ server.route({
 });
 
 server.route({
+	method	: "GET",
+	path	: "/scripts/{name}",
+	handler : function(request, response) {
+		response.file('./scripts/' + request.params.name);
+	}
+});
+
+server.route({
 	method	:	"GET",
 	path	:	"/api/recipe/{id}",
 	handler	:	function(request, response) {
@@ -79,7 +87,7 @@ server.route({
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;
-		if (!('titel' in query)) {
+		if (!('title' in query)) {
 			response("", 400);
 			return console.log("Nothing Added");
 		}
