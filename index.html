@@ -6,24 +6,34 @@
 </head>
 <body ng-app="recipeManager" ng-controller="recipeCtrl">
 	<h1 align="center">Recipe Manager</h1>
-	<table align="left" style="width : 100%">
-		<tr>
-			<td></td>
-			<td><h3>Search</h3></td>
-		</tr>
-		<tr>
-			<td style="width : 10%">Title</td>
-			<td stype="width : 10%"><input type="text" ng-model='title'></td>
-		</tr>
-		<tr>
-			<td>Tags</td>
-			<td><input type="text" ng-model='tags'></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="button" value="Search" ng-click="Search()"></td>
-		</tr>
-	</table>
+	<div>
+		<table>
+			<tr>
+				<td></td>
+				<td><h3>Adding Recipe</h3></td>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<table align="left" style="width : 100%">
+			<tr>
+				<td></td>
+				<td><h3>Search</h3></td>
+			</tr>
+			<tr>
+				<td style="width : 10%">Title</td>
+				<td stype="width : 10%"><input type="text" ng-model='title'></td>
+			</tr>
+			<tr>
+				<td>Tags</td>
+				<td><input type="text" ng-model='tags'></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" value="Search" ng-click="Search()"></td>
+			</tr>
+		</table>
+	</div>
 	<div>
 		<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results</h4> 
 		<p> Sort by
