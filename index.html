@@ -6,13 +6,25 @@
 </head>
 <body ng-app="recipeManager" ng-controller="recipeCtrl">
 	<h1 align="center">Recipe Manager</h1>
-	<div>
-		<table>
+	<div style="width : 100%">
+		<table style="width : 100%" border='1'>
 			<tr>
-				<td></td>
-				<td><h3>Adding Recipe</h3></td>
+				<td colspan='2' align='center'><h3>Adding Recipe</h3></td>
+			</tr>
+			<tr>
+				<td> Title</td>
+				<td><input type="text" ng-model='addTitle'></input></td>
+			</tr>
+			<tr>
+				<td>Tags</td>
+				<td><input type='text' ng-model="tagg" align='right' style='width : 50%'></input></td>
+				<td>
+					<button ng-click="addTag()" ng-disabled="tagg == ''">add</button>
+				</td>
+				<td colspan="2" style="width : 80%"> <p>{{ addedTags.join('  ') }}</p></td>
 			</tr>
 		</table>
+		<input type="button" value="Add Recipe" ng-click="addRecipe()"></input>
 	</div>
 	<div>
 		<table align="left" style="width : 100%">

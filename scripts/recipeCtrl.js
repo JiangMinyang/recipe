@@ -1,6 +1,8 @@
 var app = angular.module('recipeManager', []);
 
 app.controller('recipeCtrl', function($scope, $http){
+	$scope.addedTags = [];
+	$scope.tagg = '';
 	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
 		console.log(response);
 		$scope.searchResults = response;
@@ -40,5 +42,11 @@ app.controller('recipeCtrl', function($scope, $http){
 			console.log(response);
 			$scope.searchResults = response;
 		})
+	}
+	
+	$scope.addTag = function() {
+		$scope.addedTags.push($scope.tagg);
+		$scope.tagg = '';
+		console.log($scope.addedTags);
 	}
 });

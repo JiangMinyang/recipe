@@ -137,18 +137,17 @@ server.route({
 				query.tags[i] = query.tag[i];
 		}
 
-		console.log(query);
 		updateDoc.exec(function(err, result) {
 			if (err) {
 				response("Can't update this doc");
 				return console.log(err);
 			}
-			console.log(result[0]);
 			result[0].update(query, {w : 1}, function(err, result) {
 				if (err) {
 					response("Can't update this doc");
 					return console.log(err);
 				}	
+				console.log(result);
 				response("Update succeed");
 			});
 		});
