@@ -6,6 +6,10 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.qty = '';
 	$scope.unit = '';
 	$scope.ingre = '';
+	$scope.addingIngredient = '';
+	$scope.addingIngredient.qty = [];
+	$scope.addingIngredient.unit = [];
+	$scope.addingIngredient.ingre = [];
 	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
 		console.log(response);
 		$scope.searchResults = response;
@@ -51,5 +55,12 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.addedTags.push($scope.tagg);
 		$scope.tagg = '';
 		console.log($scope.addedTags);
+	}
+	
+	$scope.addIngredient = function () {
+		$scope.addingIngredient.qty.push($scope.qty);
+		$scope.addingIngredient.unit.push($scope.unit);
+		$scope.addingIngredient.ingre.push($scope.ingre);
+		$scope.qty = $scope.unit = $scope.ingre = '';
 	}
 });

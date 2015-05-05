@@ -29,7 +29,12 @@
 					Quanity: <input type="text" ng-model="qty"></input>
 					Units: <input type="text" ng-model="unit"></input>
 					Ingredient: <input type="text" ng-model="ingre"></input>
-					<button ng-click="addIndregient()" ng-disabled="qty=='' || unit=='' || ingre== ''">add</button>
+					<button ng-click="addIngredient()" ng-disabled="qty=='' || unit=='' || ingre== ''">add</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<span> {{ addingIngredient.ingre.join(' ') }}</span>
 				</td>
 			</tr>
 		</table>
