@@ -1,4 +1,8 @@
-var app = angular.module('recipeManager', []);
+var app = angular.module('recipeManager', []).
+	config(function($routeProvider, $locationPrivoder) {
+		$routeProvider.
+			when('/recipes', { template: ''})
+	};
 
 app.controller('recipeCtrl', function($scope, $http){
 	$scope.addedTags = [];

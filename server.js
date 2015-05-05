@@ -21,7 +21,7 @@ server.route({
 	method	: "GET",
 	path	: "/recipes/recipename",
 	handler	: function(request, response) {
-		response.file('./html/recipes.html');
+		response.file('./partials/recipes.html');
 	}
 });
 
