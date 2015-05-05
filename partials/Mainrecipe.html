@@ -88,9 +88,7 @@
 		</select> </p>  <br>
 		<ul>
 			<li ng-repeat="recipe in searchResults">
-				<p> Title: {{ recipe.title }} </p> 
-				<p> Cooking Time  : {{ recipe.time }} </p>
-				<p> Added Time : {{ recipe.added }} </p>
+				<a href='/#/recipes/recipename'> {{ recipe.title }} </p> 
 			</li>
 		</ul>
 	</div>
