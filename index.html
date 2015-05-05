@@ -23,6 +23,15 @@
 				</td>
 				<td colspan="2" style="width : 80%"> <p>{{ addedTags.join('  ') }}</p></td>
 			</tr>
+			<tr>
+				<td>Ingredients</td>
+				<td colspan="3">
+					Quanity: <input type="text" ng-model="qty"></input>
+					Units: <input type="text" ng-model="unit"></input>
+					Ingredient: <input type="text" ng-model="ingre"></input>
+					<button ng-click="addIndregient()" ng-disabled="qty=='' || unit=='' || ingre== ''">add</button>
+				</td>
+			</tr>
 		</table>
 		<input type="button" value="Add Recipe" ng-click="addRecipe()"></input>
 	</div>
