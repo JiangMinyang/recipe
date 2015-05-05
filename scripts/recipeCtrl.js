@@ -1,19 +1,22 @@
 var app = angular.module('recipeManager', []).
-	config(function($routeProvider, $locationPrivoder) {
+	config(function($routeProvider) {
 		$routeProvider.
-			when('/recipes', { template: ''})
-	};
+			when('/recipes', { template: './index.html', controller : 'recipeCtrl'}).
+			when('/recipes/recipename', {template : './partials/recipe.html'}).
+			otherwise({ redirectTo : '/recipes'} );
+	});
 
 app.controller('recipeCtrl', function($scope, $http){
-	$scope.addedTags = [];
+	$scope.addedTags = ['Added:'];
 	$scope.tagg = '';
 	$scope.qty = '';
 	$scope.unit = '';
 	$scope.ingre = '';
-	$scope.addingIngredient = '';
+	$scope.addingIngredient = {};
 	$scope.addingIngredient.qty = [];
 	$scope.addingIngredient.unit = [];
 	$scope.addingIngredient.ingre = [];
+	//console.log(typeof($scope.addingIngredient) + "11111");
 	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
 		console.log(response);
 		$scope.searchResults = response;

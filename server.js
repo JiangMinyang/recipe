@@ -19,17 +19,17 @@ server.route({
 
 server.route({
 	method	: "GET",
-	path	: "/recipes/recipename",
-	handler	: function(request, response) {
-		response.file('./partials/recipes.html');
+	path	: "/scripts/{name}",
+	handler : function(request, response) {
+		response.file('./scripts/' + request.params.name);
 	}
 });
 
 server.route({
 	method	: "GET",
-	path	: "/scripts/{name}",
+	path	: "/stylesheet/{name}",
 	handler : function(request, response) {
-		response.file('./scripts/' + request.params.name);
+		response.file('./stylesheet/' + request.params.name);
 	}
 });
 
@@ -67,7 +67,7 @@ server.route({
 		Docs.skip(amount * (page - 1));
 		Docs.limit(amount);
 		if ('title' in query) {
-			Docs.where('title', query.title);
+			Docs.where('title').regex(new RegExp(query.title, 'i'));
 		}	
 		if ('tag' in query) {
 			Docs.all('tags', query.tag);
