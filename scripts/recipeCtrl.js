@@ -1,8 +1,8 @@
-var app = angular.module('recipeManager', []).
+var app = angular.module('recipeManager', ['ngRoute']).
 	config(function($routeProvider) {
 		$routeProvider.
-			when('/recipes', { template: './index.html', controller : 'recipeCtrl'}).
-			when('/recipes/recipename', {template : './partials/recipe.html'}).
+			when('/recipes', { templateUrl: './partials/Mainrecipe.html'}).
+			when('/recipes/recipename', {templateUrl : './partials/recipe.html'}).
 			otherwise({ redirectTo : '/recipes'} );
 	});
 
@@ -71,3 +71,4 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.qty = $scope.unit = $scope.ingre = '';
 	}
 });
+

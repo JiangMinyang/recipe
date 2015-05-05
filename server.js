@@ -11,7 +11,7 @@ server.connection({port : 8080});
 
 server.route({
 	method	: "GET",
-	path	: "/recipes",
+	path	: "/",
 	handler : function(request, response) {
 		response.file('index.html');
 	}
@@ -22,6 +22,15 @@ server.route({
 	path	: "/scripts/{name}",
 	handler : function(request, response) {
 		response.file('./scripts/' + request.params.name);
+	}
+});
+
+
+server.route({
+	method	: "GET",
+	path	: "/partials/{name}",
+	handler : function(request, response) {
+		response.file('./partials/' + request.params.name);
 	}
 });
 

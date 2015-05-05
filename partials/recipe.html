@@ -1,0 +1,12 @@
+<div>
+	<p> Title: {{ searchResults[0].title }} </p> 
+	<p> Cooking Time  : {{ searchResults[0].time }} </p>
+	<p> Added Time : {{ searchResults[0].added }} </p>
+	<p> Ingredients :</p>
+	<ul>
+		<li ng-repeat="one in searchResults[0].ingredients">
+			Qty : {{ one.qty}}  Units : {{ one.units }}  Ingredient : {{ one.ingredient }}
+		</li>
+	</ul>
+	<p> Instruction : {{ searchResults[0].instruction }} </p>
+</div>
