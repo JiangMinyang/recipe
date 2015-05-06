@@ -48,7 +48,7 @@ server.route({
 	handler	:	function(request, response) {
 		var ID = request.params.id;
 		console.log(ID);
-		var query = Recipe.find().where('_id', ID);
+		var query = Recipe.findOne().where('_id', ID);
 		query.exec(function(err, doc) {
 			if (err) {
 				response("Can't find the recipe");
