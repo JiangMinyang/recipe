@@ -1,13 +1,33 @@
 <div>
-	<p> Title: {{ searchResults.title }} </p> 
-	<p> Cooking Time  : {{ detail.time }} </p>
-	<p> Added Time : {{ detail.added }} </p>
-	<p> Ingredients :</p>
-	<ul>
-		<li ng-repeat="one in detail.ingredients">
-			Qty : {{ one.qty}}  Units : {{ one.units }}  Ingredient : {{ one.ingredient }}
-		</li>
-	</ul>
-	<p> Instruction : {{ detail.instruction }} </p>
-	<a href='/#/recipes'> Back</a>
+	<table style="width : 30%" border='1'>
+		<tr>
+			<td>
+			<p> Title: {{ recipedetail[0].title }} </p> 
+			<p ng-show="recipedetail[0].time"> Cooking Time  : {{ recipedetail[0].time}} </p>
+			<div ng-show="recipedetail[0].tags.length != 0">
+				<p> Tags :</p>
+				<ul>
+					<li ng-repeat="one in recipedetail[0].tags">
+						{{ one }}
+					</li>
+				</ul>
+			</div>
+			<div ng-show="recipedetail[0].ingredients.length != 0">
+				<p> Ingredients :</p>
+				<ul>
+					<li ng-repeat="one in recipedetail[0].ingredients">
+						Qty : {{ one.qty}}  Units : {{ one.units }}  Ingredient : {{ one.ingredient }}
+					</li>
+				</ul>
+			</div>
+			<p ng-show="recipedetail[0].instruction"> Instruction : {{ recipedetail[0].instruction }} </p>
+			<p> Added Time : {{ recipedetail[0].added}} </p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<a href='/#/recipes' style="text-align : center">Back</a>
+			</td>
+		</tr>
+	</table>
 </div>

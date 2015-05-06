@@ -2,7 +2,7 @@ var app = angular.module('recipeManager', ['ngRoute']).
 	config(function($routeProvider) {
 		$routeProvider.
 			when('/recipes', { templateUrl: './partials/Mainrecipe.html', controller : 'recipeCtrl'}).
-			when('/recipes/recipename', {templateUrl : './partials/recipe.html', controller : 'recipeCtrl'}).
+			when('/recipes/recipename/:id', {templateUrl : './partials/recipe.html', controller : 'recipeCtrl2'}).
 			otherwise({ redirectTo : '/recipes'} );
 	});
 
@@ -16,12 +16,13 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.addingIngredient.qty = [];
 	$scope.addingIngredient.unit = [];
 	$scope.addingIngredient.ingre = [];
-	$scope.detail = {};
+	$scope.recipedetail = [];
 	//console.log(typeof($scope.addingIngredient) + "11111");
 	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
 		//console.log(response);
 		$scope.searchResults = response;
-	})
+	});
+
 	$scope.Search = function() {
 		var urlStr = "http://localhost:8080/api/recipe?";
 		if (typeof($scope.title) != 'undefined' && $scope.title != '') urlStr = urlStr + 'title=' + $scope.title;
@@ -75,15 +76,23 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.getDetail = function(ID) {
+		console.log(ID);
 		var urlStr = "http://localhost:8080/api/recipe/" + ID;
 		console.log(urlStr);
 		var temp = $http.get(urlStr);
 		temp.success(function(response, status) {
 			//console.log(response);
-			$scope.detail = response;
-			console.log($scope.detail);
+			$scope.recipedetail = response;
+			console.log($scope.recipedetail);
+	//		debugger;
 		});
-
 	}
 });
 
+app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
+	//console.log($routeParams);
+	$http.get("http://localhost:8080/api/recipe/" + $routeParams.id).success(function(response, status) {
+	//console.log(response);
+	$scope.recipedetail = response;
+	})
+});

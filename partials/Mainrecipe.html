@@ -88,7 +88,11 @@
 		</select> </p>  <br>
 		<ul>
 			<li ng-repeat="recipe in searchResults">
-				<a  ng-click='getDetail(recipe._id)' href='/#/recipes/recipename'> {{ recipe.title }} </a>
+				<a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a>
 			</li>
 		</ul>
 	</div>
+<!--	<p> {{searchResults}}</p>-->
+<!--	<a href ng-click='getDetail(searchResults[0]._id)'>test</a>-->
+<!--	<p> {{ recipedetail }} </p>-->
+<!--	'/#/recipes/recipename'-->
