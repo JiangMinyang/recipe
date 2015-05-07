@@ -111,9 +111,11 @@ app.controller('recipeCtrl', function($scope, $http){
 		queryObj.ingredient = $scope.addingIngredient.ingre;
 		queryObj.time = $scope.addTime;
 		queryObj.instructions = $scope.addInstruction;
-		console.log(queryObj);
+		$scope.addTitle = $scope.addTime = $scope.addInstruction = '';
+		$scope.addingIngredient.qty = [];
+		$scope.addingIngredient.unit = [];
+		$scope.addingIngredient.ingre = [];
 		var queryStr = serialize(queryObj);
-		console.log(queryStr);
 		var urlStr = "http://localhost:8080/api/recipe?" + queryStr;
 		//var temp = $http.post(urlStr, queryStr);
 		var temp = $http({
