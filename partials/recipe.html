@@ -1,5 +1,6 @@
 <div>
-	<table style="width : 30%" border='1'>
+<!--	<p> {{ recipedetail }}</p>-->
+	<table style="width : 30%" border='1' align='center'>
 		<tr>
 			<td>
 			<p> Title: {{ recipedetail[0].title }} </p> 
@@ -16,11 +17,11 @@
 				<p> Ingredients :</p>
 				<ul>
 					<li ng-repeat="one in recipedetail[0].ingredients">
-						Qty : {{ one.qty}}  Units : {{ one.units }}  Ingredient : {{ one.ingredient }}
+						{{ one.qty}} {{ one.units }} {{ one.ingredient }}
 					</li>
 				</ul>
 			</div>
-			<p ng-show="recipedetail[0].instruction"> Instruction : {{ recipedetail[0].instruction }} </p>
+			<p ng-show="recipedetail[0].instructions"> Instruction : {{ recipedetail[0].instructions }} </p>
 			<p> Added Time : {{ recipedetail[0].added}} </p>
 			</td>
 		</tr>

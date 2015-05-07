@@ -7,7 +7,7 @@ var app = angular.module('recipeManager', ['ngRoute']).
 	});
 
 app.controller('recipeCtrl', function($scope, $http){
-	$scope.addedTags = ['Added:'];
+	$scope.addedTags = [];
 	$scope.tagg = '';
 	$scope.qty = '';
 	$scope.unit = '';
@@ -17,6 +17,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.addingIngredient.unit = [];
 	$scope.addingIngredient.ingre = [];
 	$scope.recipedetail = [];
+	$scope.maxTime = '';
 	//console.log(typeof($scope.addingIngredient) + "11111");
 	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
 		//console.log(response);
@@ -34,6 +35,7 @@ app.controller('recipeCtrl', function($scope, $http){
 			}
 		}
 		//console.log(urlStr);
+		if ($scope.maxTime != '') urlStr += "&maxtime=" + $scope.maxTime;
 		var temp = $http.get(urlStr);
 		temp.success(function(response, status) {
 			console.log(response);
@@ -54,6 +56,7 @@ app.controller('recipeCtrl', function($scope, $http){
 			}
 		}
 		urlStr = urlStr + "&sort=" + $scope.sorting;
+		if ($scope.maxTime != '') urlStr += "&maxtime=" + $scope.maxTime;
 		//console.log(urlStr);
 		var temp = $http.get(urlStr);
 		temp.success(function(response, status) {
@@ -75,17 +78,64 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.qty = $scope.unit = $scope.ingre = '';
 	}
 	
-	$scope.getDetail = function(ID) {
-		console.log(ID);
-		var urlStr = "http://localhost:8080/api/recipe/" + ID;
-		console.log(urlStr);
-		var temp = $http.get(urlStr);
-		temp.success(function(response, status) {
-			//console.log(response);
-			$scope.recipedetail = response;
-			console.log($scope.recipedetail);
-	//		debugger;
+	$scope.checkNumber = function() {
+		return !(!$scope.addTime || !isNaN($scope.addTime))
+	}
+	
+	$scope.checkRecipeValid = function() {
+		var flag = true;
+		if (!$scope.addTitle) flag = false;
+		if ($scope.checkNumber()) flag = false;
+		return !flag;
+	}
+	
+	var serialize = function(obj, prefix) {
+	  	var str = [];
+	  	for(var p in obj) {
+	   	 	if (obj.hasOwnProperty(p)) {
+	      		var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+	      		str.push(typeof v == "object" ?
+	        	serialize(v, k) :
+	        	encodeURIComponent(k) + "=" + encodeURIComponent(v));
+	   		 }
+	  	}
+	  return str.join("&");
+	}
+	
+	$scope.addRecipe = function() {
+		var queryObj = {};
+		queryObj.title = $scope.addTitle;
+		queryObj.tag = $scope.addedTags;
+		queryObj.qty = $scope.addingIngredient.qty;
+		queryObj.unit = $scope.addingIngredient.unit;
+		queryObj.ingredient = $scope.addingIngredient.ingre;
+		queryObj.time = $scope.addTime;
+		queryObj.instructions = $scope.addInstruction;
+		console.log(queryObj);
+		var queryStr = serialize(queryObj);
+		console.log(queryStr);
+		var urlStr = "http://localhost:8080/api/recipe?" + queryStr;
+		//var temp = $http.post(urlStr, queryStr);
+		var temp = $http({
+			method : 'post',
+			url : urlStr
 		});
+		temp.success(function(response, status) {
+			$http.get("http://localhost:8080/api/recipe/" + response).success(function(response, status) {
+				$scope.searchResults.push(response[0]);
+			});
+		})
+	}
+	
+	$scope.deleteRecipe = function(ID, name) {
+		var urlStr = "http://localhost:8080/api/recipe/" + ID;
+		$http.delete(urlStr);
+		for(var i = 0; i < $scope.searchResults.length; i++)
+			if ($scope.searchResults[i]._id == name._id) {
+				$scope.searchResults.splice(i, 1);
+				break;
+			}
+		//$scope.searchResults.splice(name, 1);
 	}
 });
 

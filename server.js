@@ -51,7 +51,7 @@ server.route({
 		var query = Recipe.find().where('_id', ID);
 		query.exec(function(err, doc) {
 			if (err) {
-				response("Can't find the recipe");
+				response("Can't find the recipe", 404);
 				return console.log("Get recipe Failed");
 			}
 			response(doc, 200);
@@ -84,6 +84,9 @@ server.route({
 		if ('sort' in query) {
 			Docs.sort(query.sort);
 		}
+		if ('maxtime' in query) {
+			Docs.where({'time' : {$lt: query.maxtime}});
+		}
 		Docs.exec(function(err, docs) {
 			if (err) {
 				response("", 400);
@@ -98,12 +101,14 @@ server.route({
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;
+		console.log(query);
 		if (!('title' in query)) {
 			response("", 400);
 			return console.log("Nothing Added");
 		}
 		query.added = new Date().toString();
-
+		if (query.time == 'undefined') query.time = '';
+		if (query.instruction == 'undefined') query.instruction = '';
 		query.ingredients = [];
 		if ('qty' in query) {
 			for(var i = 0; i < query.qty.length; i++)

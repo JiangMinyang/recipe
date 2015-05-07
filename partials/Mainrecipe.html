@@ -1,4 +1,15 @@
-<div style="width : 100%">
+<table>
+	<tr>
+		<td style='width : 50%'>
+			
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+</table>
+	
+	<div style="width : 100%">
 		<table style="width : 100% float : left">
 			<tr>
 				<td colspan="2"></td>
@@ -24,7 +35,7 @@
 			<tr >
 				<td></td>
 				<td></td>
-				<td colspan="2"> <p>{{ addedTags.join('  ') }}</p></td>
+				<td colspan="2"> Added: <p>{{ addedTags.join('  ') }}</p></td>
 			</tr>
 						
 			<tr>
@@ -51,12 +62,41 @@
 			<tr>
 				<td></td>
 				<td colspan="3">
-					<span> Added: {{ addingIngredient.ingre.join(' ') }}</span>
+					<span> Added: {{ addingIngredient.ingre.join(' ,') }}</span>
 				</td>
 			</tr>
+			<tr>
+				<td></td>
+				<td>Cooking Time:</td>
+				<td>
+					<table style="width : 40%">
+						<tr>
+							<td>
+								<input type="text" type="number" ng-model="addTime" maxlength="4"></input>
+							</td>
+							<td>
+								<p style="text-align : left; font-size : 15px; text-align : center">minutes</p>
+							</td>
+						</tr>
+					</table>	
+				</td>
+				<td><p ng-show="checkNumber()" style="color : red; font-size : 15px">Must be Number</p></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Instruction:</td>
+				<td><textarea cols="50" rows="4" ng-model="addInstruction"></textarea></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" ng-click="addRecipe()" value="Add Recipe" ng-disabled="checkRecipeValid()"></input></td>
+			</tr>
 		</table>
-		<input type="button" value="Add Recipe" ng-click="addRecipe()"></input>
+		
 	</div>
+	
+	
+	
 	<div>
 		<table align="left" style="width : 100%">
 			<tr>
@@ -71,6 +111,10 @@
 			<tr>
 				<td align='center'>Tags</td>
 				<td><input type="text" ng-model='tags'></td>
+			</tr>
+			<tr>
+				<td align='center'>Max Cooking Time</td>
+				<td><input type='text' ng-model='maxTime'></input></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -88,7 +132,12 @@
 		</select> </p>  <br>
 		<ul>
 			<li ng-repeat="recipe in searchResults">
-				<a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a>
+				<table style="width : 100%">
+					<tr>
+						<td style="width : 30%"><a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a></td>
+						<td><a href ng-click="deleteRecipe(recipe._id, recipe)" style="font-size : 8px; color : blue; font-style : normal"> delete</a></td>
+					</tr>
+				</table>
 			</li>
 		</ul>
 	</div>
