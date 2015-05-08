@@ -138,14 +138,8 @@
 					<div class="col-sm-3" style='height : 100px' ng-repeat='recipe in searchResults | orderBy: Key | startFrom : (page - 1) * 12 | limitTo : 12'>
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<table style='width : 100%'>
-									<tr>
-										<td style="width : 95%"><h3 class="panel-title"><a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a></h3></td>
-										<td><a href class="pull-right clickable glyphicon glyphicon-remove panel-title" ng-click="deleteRecipe(recipe._id, recipe)"></a></td>
-									</tr>
-								</table>
-								
-								
+								<button type="button" class="close" ng-click="deleteRecipe(recipe._id, recipe)">&times;</button>
+								<h3 class="panel-title"><a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a></h3>
 							</div>
 							<div class="panel-body">
 								<span ng-repeat="tag in recipe.tags">
