@@ -95,7 +95,7 @@ server.route({
 			Docs.sort(query.sort);
 		}
 		if ('maxtime' in query) {
-			Docs.where({'time' : {$lt: query.maxtime}});
+			Docs.where({'time' : {$lte: query.maxtime}});
 		}
 		Docs.exec(function(err, docs) {
 			if (err) {
@@ -111,6 +111,7 @@ server.route({
 	path	:	"/api/recipe",
 	handler	:	function(request, response) {
 		var query = request.query;
+		console.log(query);
 		console.log(query);
 		if (!('title' in query)) {
 			response("", 400);
@@ -136,6 +137,7 @@ server.route({
 		console.log(query);
 		var recipe = new Recipe(query);
 		recipe.save(function(err, doc) {
+			if (err) return console.log(err);
 			console.log("Recipe Added");
 			response(doc._id);
 		});

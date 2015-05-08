@@ -35,7 +35,7 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.currentPage = 1;
 		$scope.searchResults = response;
 		$scope.pages = [];
-		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 10) + 1; i++) {
+		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 12) + 1; i++) {
 			$scope.pages[i] = i + 1;
 		}
 	});
@@ -61,12 +61,13 @@ app.controller('recipeCtrl', function($scope, $http){
 			console.log(response);
 			$scope.searchResults = response;
 			$scope.pages = [];
-			for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 10) + 1; i++)
+			for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 12) + 1; i++)
 			$scope.pages[i] = i + 1;
 			//		console.log($scope.searchResults);
 		});
 
 	}
+	
 	$scope.Search = function() {
 		var urlStr = "http://localhost:8080/api/recipe?";
 		$scope.currentPage = 1;
@@ -80,13 +81,13 @@ app.controller('recipeCtrl', function($scope, $http){
 	
 	$scope.changeToPrev = function() {
 		if ($scope.currentpage != 1) {
-			$scope.currentpage -= 1;
+			$scope.currentpage = $scope.currentpage - 1;
 			$scope.page = $scope.currentpage;
 		}
 	}
 	
 	$scope.changeToPrev = function() {
-		if ($scope.currentpage != Math.floor(($scope.searchResults.length - 1) / 10) + 1) {
+		if ($scope.currentpage != Math.floor(($scope.searchResults.length - 1) / 12) + 1) {
 			$scope.currentpage += 1;
 			$scope.page = $scope.currentpage;
 		}
@@ -99,7 +100,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	
 	$scope.changeToNext = function() {
 		//console.log($scope.currentPage);
-		if ($scope.currentPage == Math.floor(($scope.searchResults.length - 1) / 10) + 1) return;
+		if ($scope.currentPage == Math.floor(($scope.searchResults.length - 1) / 12) + 1) return;
 		$scope.changeTo($scope.currentPage + 1);
 	}
 	
@@ -177,7 +178,7 @@ app.controller('recipeCtrl', function($scope, $http){
 			$http.get("http://localhost:8080/api/recipe/" + response).success(function(response, status) {
 				$scope.searchResults.push(response[0]);
 				$scope.pages = [];
-				for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 10) + 1; i++)
+				for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 12) + 1; i++)
 					$scope.pages[i] = i + 1;
 			});
 		})
@@ -193,17 +194,29 @@ app.controller('recipeCtrl', function($scope, $http){
 				break;
 			}
 		$scope.pages = [];
-		if (Math.floor((temp - 1)/ 10) != (Math.floor(($scope.searchResults.length - 1)/ 10))) {
+		if (Math.floor((temp - 1)/ 12) != (Math.floor(($scope.searchResults.length - 1)/ 12))) {
 			if (temp != 1) {
 				$scope.page -= 1;
 				$scope.currentpage -= 1;
 			}
 		}
-		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 10) + 1; i++)
+		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 12) + 1; i++)
 			$scope.pages[i] = i + 1;
 		//$scope.searchResults.splice(name, 1);
 	}
 });
+
+app.filter('maxnumber', function() {
+	return function(input, maxtime) {
+		var out = [];
+		angular.forEach(input, function(recipe) {
+			if (recipe.time <= maxtime) out.push(recipe);
+		});
+		console.log(out);
+		return out;
+	}
+})
+
 
 app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 	//console.log($routeParams);

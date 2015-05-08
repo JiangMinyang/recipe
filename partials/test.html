@@ -57,30 +57,28 @@
 			</div>
 			
 			
-			<!-- Split button -->
-			
 <!--Sort dropdown-->
-<div class="btn-group">
-  <button type="button" class="btn btn-default">Sort By</button>
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href ng-click="sortByKey('title')">Title</a></li>
-    <li><a href ng-click="sortByKey('time')">Cooking time</a></li>
-    <li><a href ng-click="sortByKey('added')">Added time</a></li>
-  </ul>
-</div>
-
-<nav>
-  <ul class="pagination">
-    <li><a href aria-label="Previous" ng-click="changeToPrev()"><span aria-hidden="true">&laquo;</span></a></li>
-	<li ng-repeat='i in pages' ng-class="currentpage == i ? 'active' : ''">
-		<a href ng-click='changeTo(i)'>{{ i }} <span class="sr-only">(current)</span></a>
-	</li>	
-    <li><a href aria-label="Next" ng-click="changeToNext()"><span aria-hidden="true">&raquo;</span></a></li>
-    
-  </ul>
-</nav>
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default">Sort By</button>
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			    <span class="caret"></span>
+			    <span class="sr-only">Toggle Dropdown</span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+			    <li><a href ng-click="sortByKey('title')">Title</a></li>
+			    <li><a href ng-click="sortByKey('time')">Cooking time</a></li>
+			    <li><a href ng-click="sortByKey('added')">Added time</a></li>
+			  </ul>
+			</div>
+			
+			<nav>
+			  <ul class="pagination">
+			    <li><a href aria-label="Previous" ng-click="changeToPrev()"><span aria-hidden="true">&laquo;</span></a></li>
+				<li ng-repeat='i in pages' ng-class="currentpage == i ? 'active' : ''">
+					<a href ng-click='changeTo(i)'>{{ i }} <span class="sr-only">(current)</span></a>
+				</li>	
+			    <li><a href aria-label="Next" ng-click="changeToNext()"><span aria-hidden="true">&raquo;</span></a></li>
+			    
+			  </ul>
+			</nav>
 
