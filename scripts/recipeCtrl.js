@@ -68,6 +68,15 @@ app.controller('recipeCtrl', function($scope, $http){
 
 	}
 	
+	$scope.searchByTag = function(tag) {
+		var urlStr = "http://localhost:8080/api/recipe?tag=" + tag;
+		$scope.title = '';
+		$scope.maxTime = '';
+		$scope.changeTo(1);
+		$scope.tags = tag;
+		doGetRequest(urlStr);
+	}
+	
 	$scope.Search = function() {
 		var urlStr = "http://localhost:8080/api/recipe?";
 		$scope.currentPage = 1;

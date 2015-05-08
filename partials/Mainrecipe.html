@@ -148,7 +148,10 @@
 								
 							</div>
 							<div class="panel-body">
-								{{ recipe.tags.join('  ,') }}
+								<span ng-repeat="tag in recipe.tags">
+									<span ng-show='tag != recipe.tags[0]'> ,</span>
+									<a href ng-click="searchByTag(tag)" style="color : black">{{ tag }}</a>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -160,9 +163,9 @@
 		<td align = 'center'>
 		<nav>
 		  <ul class="pagination">
-		    <li><a href aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+		    <li><a href aria-label="Previous" ng-click="changeToPrev()"><span aria-hidden="true">&laquo;</span></a></li>
 			<li ng-repeat='i in pages' ng-class="currentpage == i ? 'active' : ''"><a href ng-click='changeTo(i)'>{{ i }} <span class="sr-only">(current)</span></a></li>	
-		    <li><a href aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+		    <li><a href aria-label="Next" ng-click="changeToNext()"><span aria-hidden="true">&raquo;</span></a></li>
 		    
 		  </ul>
 		</nav>
