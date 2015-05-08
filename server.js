@@ -36,6 +36,14 @@ server.route({
 
 server.route({
 	method	: "GET",
+	path	: "/fonts/{name}",
+	handler	: function(request, response) {
+		response.file('./fonts/' + request.params.name);
+	}
+});
+
+server.route({
+	method	: "GET",
 	path	: "/stylesheet/{name}",
 	handler : function(request, response) {
 		response.file('./stylesheet/' + request.params.name);
@@ -67,6 +75,7 @@ server.route({
 		var Docs = Recipe.find();
 		var amount = 0;
 	//	console.log(query);
+	/*
 		if ('amount' in query) {
 			amount = query.amount;
 		}
@@ -75,6 +84,7 @@ server.route({
 		if ('page' in query) page = query.page;
 		Docs.skip(amount * (page - 1));
 		Docs.limit(amount);
+	*/
 		if ('title' in query) {
 			Docs.where('title').regex(new RegExp(query.title, 'i'));
 		}	

@@ -2,140 +2,170 @@
 	<tr>
 		<td style='width : 50%' valign='top'>
 			<div style="width : 100%">
-		<table style="width : 100% float : left">
-			<tr>
-				<td colspan="2"></td>
-				<td align='center'><h3>Adding Recipe</h3></td>
-			</tr>
-
-			<tr>
-				<td style="width : 10%"></td>
-				<td  style = 'width : 5%'> Title</td>
-				<td><input type="text" ng-model='addTitle'></input></td>
-				<td></td>
-			</tr>
-					
-			<tr>
-				<td></td>
-				<td>Tags</td>
-				<td style="width : 20%"><input type='text' ng-model="tagg" align='right'></input></td>
-				<td>
-					<button ng-click="addTag()" ng-disabled="tagg == ''">add</button>
-				</td>
-			</tr>
-
-			<tr >
-				<td></td>
-				<td></td>
-				<td colspan="2"> Added: <p>{{ addedTags.join('  ') }}</p></td>
-			</tr>
-						
-			<tr>
-				<td></td>
-				<td >Ingredients</td>
-				<td>
-					<table>
-						<tr>
-							<td>Quanity: </td>
-							<td><input type="text" ng-model="qty"></td>
-						</tr>
-						<tr>
-							<td>Units: </td>
-							<td><input type="text" ng-model="unit"></input></td>
-						</tr>
-						<tr>
-							<td>Ingredient: </td>
-							<td><input type="text" ng-model="ingre"></input></td>
-						</tr>
-					</table>
-				</td>
-				<td><button ng-click="addIngredient()" ng-disabled="qty=='' || unit=='' || ingre== ''">add</button></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td colspan="3">
-					<span> Added: {{ addingIngredient.ingre.join(' ,') }}</span>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Cooking Time:</td>
-				<td>
-					<table style="width : 40%">
-						<tr>
-							<td>
-								<input type="text" type="number" ng-model="addTime" maxlength="4"></input>
-							</td>
-							<td>
-								<p style="text-align : left; font-size : 15px; text-align : center">minutes</p>
-							</td>
-						</tr>
-					</table>	
-				</td>
-				<td><p ng-show="checkNumber()" style="color : red; font-size : 15px">Must be Number</p></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Instruction:</td>
-				<td><textarea cols="50" rows="4" ng-model="addInstruction"></textarea></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="button" ng-click="addRecipe()" value="Add Recipe" ng-disabled="checkRecipeValid()"></input></td>
-			</tr>
-		</table>
-		
-	</div>
-		</td>
-		<td>
-			<div>
-		<table align="left" style="width : 100%">
-			<tr>
-				<td></td>
-				<td><h3>Search</h3></td>
-			</tr>
-			<tr>
-				<td style="width : 10%" align='center'>Title</td>
-				<td style="width : 10%"><input type="text" ng-model='title'></td>
-				<td style="width : 50%"></td>
-			</tr>
-			<tr>
-				<td align='center'>Tags</td>
-				<td><input type="text" ng-model='tags'></td>
-			</tr>
-			<tr>
-				<td align='center'>Max Cooking Time</td>
-				<td><input type='text' ng-model='maxTime'></input></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="button" value="Search" ng-click="Search()"></td>
-			</tr>
-		</table>
-	</div>
-	<div>
-		<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results</h4> 
-		<p> Sort by
-		<select ng-init="sorting='title'" ng-change="sortByKey()" ng-model="sorting">
-				<option value="title">title</option>
-				<option value="time">time</option>
-				<option value="added">added</option>
-		</select> </p>  <br>
-		<ul>
-			<li ng-repeat="recipe in searchResults">
-				<table style="width : 100%">
+				<table style="width : 100% float : left">
 					<tr>
-						<td style="width : 30%"><a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a></td>
-						<td><a href ng-click="deleteRecipe(recipe._id, recipe)" style="font-size : 8px; color : blue; font-style : normal"> delete</a></td>
+						<td colspan="2"></td>
+						<td align='center'><h3>Adding Recipe</h3></td>
+					</tr>
+		
+					<tr>
+						<td style="width : 10%"></td>
+						<td  style = 'width : 5%'> Title</td>
+						<td><input type="text" ng-model='addTitle'></input></td>
+						<td></td>
+					</tr>
+							
+					<tr>
+						<td></td>
+						<td>Tags</td>
+						<td style="width : 20%"><input type='text' ng-model="tagg" align='right'></input></td>
+						<td>
+							<button ng-click="addTag()" ng-disabled="tagg == ''">add</button>
+						</td>
+					</tr>
+		
+					<tr >
+						<td></td>
+						<td></td>
+						<td colspan="2"> Added: <p>{{ addedTags.join('  ') }}</p></td>
+					</tr>
+								
+					<tr>
+						<td></td>
+						<td >Ingredients</td>
+						<td>
+							<table>
+								<tr>
+									<td>Quanity: </td>
+									<td><input type="text" ng-model="qty"></td>
+								</tr>
+								<tr>
+									<td>Units: </td>
+									<td><input type="text" ng-model="unit"></input></td>
+								</tr>
+								<tr>
+									<td>Ingredient: </td>
+									<td><input type="text" ng-model="ingre"></input></td>
+								</tr>
+							</table>
+						</td>
+						<td><button ng-click="addIngredient()" ng-disabled="qty=='' || unit=='' || ingre== ''">add</button></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="3">
+							<span> Added: {{ addingIngredient.ingre.join(' ,') }}</span>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Cooking Time:</td>
+						<td>
+							<table style="width : 40%">
+								<tr>
+									<td>
+										<input type="text" type="number" ng-model="addTime" maxlength="4"></input>
+									</td>
+									<td>
+										<p style="text-align : left; font-size : 15px; text-align : center">minutes</p>
+									</td>
+								</tr>
+							</table>	
+						</td>
+						<td><p ng-show="checkNumber()" style="color : red; font-size : 15px">Must be Number</p></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Instruction:</td>
+						<td><textarea cols="50" rows="4" ng-model="addInstruction"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" ng-click="addRecipe()" value="Add Recipe" ng-disabled="checkRecipeValid()"></input></td>
 					</tr>
 				</table>
-			</li>
-		</ul>
-	</div>
-<!--	<p> {{searchResults}}</p>-->
-<!--	<a href ng-click='getDetail(searchResults[0]._id)'>test</a>-->
-<!--	<p> {{ recipedetail }} </p>-->
-<!--	'/#/recipes/recipename'-->
+				
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div>
+				<table align="left" style="width : 100%">
+					<tr>
+						<td></td>
+						<td><h3>Search</h3></td>
+					</tr>
+					<tr>
+						<td style="width : 10%" align='center'>Title</td>
+						<td style="width : 10%"><input type="text" ng-model='title'></td>
+						<td style="width : 50%"></td>
+					</tr>
+					<tr>
+						<td align='center'>Tags</td>
+						<td><input type="text" ng-model='tags'></td>
+					</tr>
+					<tr>
+						<td align='center'>Max Cooking Time</td>
+						<td><input type='text' ng-model='maxTime'></input></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" value="Search" ng-click="Search()">
+						</td>
+							
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h4 ng-show="searchResults.length != 0"> Found {{ searchResults.length }} results
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default">Sort By</button>
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href ng-click="sortByKey('title')">Title</a></li>
+					    <li><a href ng-click="sortByKey('time')">Cooking time</a></li>
+					    <li><a href ng-click="sortByKey('added')">Added time</a></li>
+					  </ul>
+				</div>	
+				</h4> 	
+					
+<!--Search Results-->
+				<div>
+					<div class="col-sm-3" ng-repeat='recipe in searchResults | orderBy: Key | startFrom : (page - 1) * 10 | limitTo : 10'>
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<table style='width : 100%'>
+									<tr>
+										<td style="width : 95%"><h3 class="panel-title"><a  href='/#/recipes/recipename/{{recipe._id}}'> {{ recipe.title }} </a></h3></td>
+										<td><a href class="pull-right clickable glyphicon glyphicon-remove panel-title" ng-click="deleteRecipe(recipe._id, recipe)"></a></td>
+									</tr>
+								</table>
+								
+								
+							</div>
+							<div class="panel-body">
+								{{ recipe.tags.join('  ,') }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td align = 'center'>
+		<nav>
+		  <ul class="pagination">
+		    <li><a href aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+			<li ng-repeat='i in pages' ng-class="currentpage == i ? 'active' : ''"><a href ng-click='changeTo(i)'>{{ i }} <span class="sr-only">(current)</span></a></li>	
+		    <li><a href aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+		    
+		  </ul>
+		</nav>
 		</td>
 	</tr>
 </table>

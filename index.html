@@ -2,15 +2,19 @@
 <html>
 <head>
 	<title>Recipe Manager</title>
-	<link rel='stylesheet' type="text/css" href="./stylesheet/style.css"></link>
-	<script src="./scripts/angular.min.js"></script>
-	<script src="./scripts/angular-route.js"></script>
+<!--	<link rel='stylesheet' type="text/css" href="./stylesheet/style.css"></link>-->
+	<link rel="stylesheet" href="./stylesheet/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="./stylesheet/bootstrap-theme.min.css"></link>
 </head>
 <body ng-app="recipeManager" ng-controller="recipeCtrl">
 	<h1 align="center">Recipe Manager</h1>
 	<div>
 		<ng-view></ng-view>
 	</div>
+	<script src="./scripts/angular.min.js"></script>
+	<script src="./scripts/angular-route.js"></script>
+	<script src='./scripts/jquery.min.js'></script>
+	<script src='./scripts/bootstrap.js'></script>
 	<script src="./scripts/recipeCtrl.js"></script>
 </body>
 </html>

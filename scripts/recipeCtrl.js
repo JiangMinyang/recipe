@@ -3,8 +3,16 @@ var app = angular.module('recipeManager', ['ngRoute']).
 		$routeProvider.
 			when('/recipes', { templateUrl: './partials/Mainrecipe.html', controller : 'recipeCtrl'}).
 			when('/recipes/recipename/:id', {templateUrl : './partials/recipe.html', controller : 'recipeCtrl2'}).
+			//when('/recipes/test', {templateUrl : './partials/test.html', controller : 'recipeCtrl'}).
 			otherwise({ redirectTo : '/recipes'} );
 	});
+
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
 
 app.controller('recipeCtrl', function($scope, $http){
 	$scope.addedTags = [];
@@ -18,14 +26,26 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.addingIngredient.ingre = [];
 	$scope.recipedetail = [];
 	$scope.maxTime = '';
+	$scope.page = 1;
+	$scope.pages = [];
+	$scope.currentpage = 1;
 	//console.log(typeof($scope.addingIngredient) + "11111");
-	$http.get("http://localhost:8080/api/recipe?page=1").success(function(response, status) {
+	$http.get("http://localhost:8080/api/recipe?").success(function(response, status) {
 		//console.log(response);
+		$scope.currentPage = 1;
 		$scope.searchResults = response;
+		$scope.pages = [];
+		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 10) + 1; i++) {
+			$scope.pages[i] = i + 1;
+		}
 	});
-
-	$scope.Search = function() {
-		var urlStr = "http://localhost:8080/api/recipe?";
+	
+	$scope.checkAct = function(i) {
+		console.log(i);
+		return 'active';
+	}
+	
+	var doGetRequest = function(urlStr) {
 		if (typeof($scope.title) != 'undefined' && $scope.title != '') urlStr = urlStr + 'title=' + $scope.title;
 		if (typeof($scope.tags) != 'undefined' && $scope.tags != '') {
 			var tag = $scope.tags.split(',');
@@ -40,29 +60,60 @@ app.controller('recipeCtrl', function($scope, $http){
 		temp.success(function(response, status) {
 			console.log(response);
 			$scope.searchResults = response;
+			$scope.pages = [];
+			for(var i = 0; i < Math.floor(($scope.searchResults.length - 1) / 10) + 1; i++)
+			$scope.pages[i] = i + 1;
 			//		console.log($scope.searchResults);
 		});
 
 	}
-
-	$scope.sortByKey = function() {
+	$scope.Search = function() {
 		var urlStr = "http://localhost:8080/api/recipe?";
-		if (typeof($scope.title) != 'undefined' && $scope.title != '') urlStr = urlStr + 'title=' + $scope.title;
-		if (typeof($scope.tags) != 'undefined' && $scope.tags != '') {
-			var tag = $scope.tags.split(',');
-			if (tag != '') {
-				for(var i = 0; i < tag.length; i++)
-					urlStr = urlStr + '&tag=' + tag[i];
-			}
+		$scope.currentPage = 1;
+		doGetRequest(urlStr);
+	}
+
+	$scope.changeTo = function(page) {
+		$scope.currentpage = page;
+		$scope.page = page;
+	}
+	
+	$scope.changeToPrev = function() {
+		if ($scope.currentpage != 1) {
+			$scope.currentpage -= 1;
+			$scope.page = $scope.currentpage;
 		}
-		urlStr = urlStr + "&sort=" + $scope.sorting;
-		if ($scope.maxTime != '') urlStr += "&maxtime=" + $scope.maxTime;
-		//console.log(urlStr);
-		var temp = $http.get(urlStr);
-		temp.success(function(response, status) {
-			console.log(response);
-			$scope.searchResults = response;
-		});
+	}
+	
+	$scope.changeToPrev = function() {
+		if ($scope.currentpage != Math.floor(($scope.searchResults.length - 1) / 10) + 1) {
+			$scope.currentpage += 1;
+			$scope.page = $scope.currentpage;
+		}
+	}
+	
+	$scope.changeToPrev = function() {
+		if ($scope.currentPage == 1) return;
+		$scope.changeTo($scope.currentPage - 1);
+	}
+	
+	$scope.changeToNext = function() {
+		//console.log($scope.currentPage);
+		if ($scope.currentPage == Math.floor(($scope.searchResults.length - 1) / 10) + 1) return;
+		$scope.changeTo($scope.currentPage + 1);
+	}
+	
+	/*
+	$scope.sortByKey = function(key) {
+		var urlStr = "http://localhost:8080/api/recipe?";
+		urlStr = urlStr + "&sort=" + key;
+		$scope.currentPage = 1;
+		doGetRequest(urlStr);
+	}
+	*/
+	
+	$scope.sortByKey = function(key) {
+		$scope.Key = key;
 	}
 	
 	$scope.addTag = function() {
@@ -125,6 +176,9 @@ app.controller('recipeCtrl', function($scope, $http){
 		temp.success(function(response, status) {
 			$http.get("http://localhost:8080/api/recipe/" + response).success(function(response, status) {
 				$scope.searchResults.push(response[0]);
+				$scope.pages = [];
+				for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 10) + 1; i++)
+					$scope.pages[i] = i + 1;
 			});
 		})
 	}
@@ -132,11 +186,21 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.deleteRecipe = function(ID, name) {
 		var urlStr = "http://localhost:8080/api/recipe/" + ID;
 		$http.delete(urlStr);
+		var temp = $scope.searchResults.length;
 		for(var i = 0; i < $scope.searchResults.length; i++)
 			if ($scope.searchResults[i]._id == name._id) {
 				$scope.searchResults.splice(i, 1);
 				break;
 			}
+		$scope.pages = [];
+		if (Math.floor((temp - 1)/ 10) != (Math.floor(($scope.searchResults.length - 1)/ 10))) {
+			if (temp != 1) {
+				$scope.page -= 1;
+				$scope.currentpage -= 1;
+			}
+		}
+		for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 10) + 1; i++)
+			$scope.pages[i] = i + 1;
 		//$scope.searchResults.splice(name, 1);
 	}
 });
