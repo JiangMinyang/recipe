@@ -2,7 +2,7 @@
 <!--	<p> {{ recipedetail }}</p>-->
 	<table style="width : 30%" border='1' align='center'>
 		<tr>
-			<td>
+			<td colspan="2">
 			<p> Title: {{ recipedetail[0].title }} </p> 
 			<p ng-show="recipedetail[0].time"> Cooking Time  : {{ recipedetail[0].time}} </p>
 			<div ng-show="recipedetail[0].tags.length != 0">
@@ -27,31 +27,70 @@
 		</tr>
 		<tr>
 			<td>
-			<a href='/#/recipes' style="text-align : center">Back</a>
+				<div class="btn-toolbar">
+					<a href='/#/recipes' class="btn btn-info" style="float : left">Back</a>
+			  		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit">edit</button>
+						<div class="modal fade" id="edit" role="dialog">
+						   	<div class="modal-dialog">
+						      	<div class="modal-content">
+						        	<div class="modal-header">
+						          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+						          		<h4 class="modal-title">Recipe Editor</h4>
+						        	</div>
+						        	<div class="modal-body">
+						          		<div class="row">
+											  <div class="col-lg-6">
+												  <div class="input-group">
+													  <span class="input-group-btn">
+														  <button type="button" class="btn btn-default" ng-disabled="true">Title</button>
+													  </span>
+													  <input type="text" class="form-control" ng-model="updatetitle">
+												  </div>
+											  </div>
+										</div>
+										<div class="row">
+											  <div class="col-lg-6">
+												  <div class="input-group">
+													  <span class="input-group-btn">
+														  <button type="button" class="btn btn-default" ng-disabled="true">Cooking Time</button>
+													  </span>
+													  <input type="text" class="form-control" ng-model="updatetime">
+												  </div>
+											  </div>
+										</div>
+										<div class="row">
+											  <div class="col-lg-6">
+												  <div class="input-group">
+													  <span class="input-group-btn">
+														  <button type="button" class="btn btn-default" ng-disabled="true">Tags</button>
+													  </span>
+													  <input type="text" class="form-control" ng-model="updatetags">
+												  </div>
+											  </div>
+										</div>
+										<div class="row">
+											<div class="col-lg-6">
+												  <div class="input-group">
+													  <span class="input-group-btn">
+														  <button type="button" class="btn btn-default" ng-disabled="true">Instruction</button>
+													  </span>
+													  <textarea cols="50" rows="4" ng-model="updateinstruction"></textarea>
+												  </div>
+											  </div>	
+						        		</div>
+						        	<div class="modal-footer">
+										<button type="button" class="btn btn-info" ng-click="updateRecipe()" data-dismiss='modal'>Submit</button>
+						         		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        	</div>
+						      	</div>
+						  	</div>
+				 	 	</div>
+				</div>
 			</td>
 		</tr>
 	</table>
 	
-	<div class="container">
 
-  		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">edit</button>
-			  <div class="modal fade" id="myModal" role="dialog">
-			    	<div class="modal-dialog">
-			      		<div class="modal-content">
-			        		<div class="modal-header">
-			          			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			          			<h4 class="modal-title">Modal Header</h4>
-			        		</div>
-			        		<div class="modal-body">
-			          			<p>Some text in the modal.</p>
-			        		</div>
-			        		<div class="modal-footer">
-			         			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        		</div>
-			      		</div>
-			    	</div>
-			  </div>
-	</div>
 </div>
 
 

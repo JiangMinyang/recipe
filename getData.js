@@ -1,13 +1,11 @@
 var fs = require('fs');
 var http = require('http');
-var request = require('request');
 var qstring = require('querystring');
 fs.readFile('a.txt', function(err, data) {
 	if (err) return console.log(err);
 	var Recipe = data.toString();
 	var Recipes = JSON.parse(Recipe).matches;
 	for(var i in Recipes) {
-		console.log(Recipes[i]);
 	var queryObj = {};
 	queryObj.title = Recipes[i].recipeName;
 	queryObj.time = Recipes[i].totalTimeInSeconds / 60;
@@ -24,15 +22,16 @@ fs.readFile('a.txt', function(err, data) {
 		queryObj.unit.push('unit');
 		queryObj.ingredient.push(Recipes[i].ingredients[j]);
 	}
+	console.log('curl --request POST http://192.168.33.10:8080/api/recipe?' + qstring.stringify(queryObj));
+	/*
 	var options = {
 		method : 'POST',
-		url  : 'http://localhost',
-		path : '/api/recipe?' + qstring.stringify(queryObj),
-		port : 8080,
+		url  : 'http://192.168.33.10:8080/api/recipe?' + qstring.stringify(queryObj),
 	}
-	console.log(qstring.stringify(queryObj));
 	http.request(options, function(err) {
+		console.log('hello');
 		if (err) return console.log(err);
 	}).end();
+		*/
 	};
 });

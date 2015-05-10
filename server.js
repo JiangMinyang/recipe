@@ -162,19 +162,18 @@ server.route({
 			for(var i = 0; i < query.tag.length; i++)
 				query.tags[i] = query.tag[i];
 		}
-
 		updateDoc.exec(function(err, result) {
 			if (err) {
-				response("Can't update this doc");
+				response("Can't find this doc", 404);
 				return console.log(err);
 			}
 			result[0].update(query, {w : 1}, function(err, result) {
 				if (err) {
-					response("Can't update this doc");
+					response("Can't update this doc", 404);
 					return console.log(err);
 				}	
 				console.log(result);
-				response("Update succeed");
+				response("Update succeed", 200);
 			});
 		});
 	}

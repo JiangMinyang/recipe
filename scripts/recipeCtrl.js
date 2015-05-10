@@ -30,7 +30,9 @@ app.controller('recipeCtrl', function($scope, $http){
 	$scope.pages = [];
 	$scope.currentpage = 1;
 	//console.log(typeof($scope.addingIngredient) + "11111");
-	$http.get("http://localhost:8080/api/recipe?").success(function(response, status) {
+	$scope.Reset = function() {
+		$scope.title = $scope.tags = $scope.maxTime = '';
+		$http.get("http://192.168.33.10:8080/api/recipe?").success(function(response, status) {
 		//console.log(response);
 		$scope.currentPage = 1;
 		$scope.searchResults = response;
@@ -39,7 +41,9 @@ app.controller('recipeCtrl', function($scope, $http){
 			$scope.pages[i] = i + 1;
 		}
 	});
+	}
 	
+	$scope.Reset();
 	$scope.checkAct = function(i) {
 		console.log(i);
 		return 'active';
@@ -69,7 +73,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.searchByTag = function(tag) {
-		var urlStr = "http://localhost:8080/api/recipe?tag=" + tag;
+		var urlStr = "http://192.168.33.10:8080/api/recipe?tag=" + tag;
 		$scope.title = '';
 		$scope.maxTime = '';
 		$scope.changeTo(1);
@@ -78,7 +82,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.Search = function() {
-		var urlStr = "http://localhost:8080/api/recipe?";
+		var urlStr = "http://192.168.33.10:8080/api/recipe?";
 		$scope.currentPage = 1;
 		doGetRequest(urlStr);
 	}
@@ -95,27 +99,16 @@ app.controller('recipeCtrl', function($scope, $http){
 		}
 	}
 	
-	$scope.changeToPrev = function() {
+	$scope.changeToNext = function() {
 		if ($scope.currentpage != Math.floor(($scope.searchResults.length - 1) / 12) + 1) {
 			$scope.currentpage += 1;
 			$scope.page = $scope.currentpage;
 		}
 	}
 	
-	$scope.changeToPrev = function() {
-		if ($scope.currentPage == 1) return;
-		$scope.changeTo($scope.currentPage - 1);
-	}
-	
-	$scope.changeToNext = function() {
-		//console.log($scope.currentPage);
-		if ($scope.currentPage == Math.floor(($scope.searchResults.length - 1) / 12) + 1) return;
-		$scope.changeTo($scope.currentPage + 1);
-	}
-	
 	/*
 	$scope.sortByKey = function(key) {
-		var urlStr = "http://localhost:8080/api/recipe?";
+		var urlStr = "http://192.168.33.10:8080/api/recipe?";
 		urlStr = urlStr + "&sort=" + key;
 		$scope.currentPage = 1;
 		doGetRequest(urlStr);
@@ -177,14 +170,14 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.addingIngredient.unit = [];
 		$scope.addingIngredient.ingre = [];
 		var queryStr = serialize(queryObj);
-		var urlStr = "http://localhost:8080/api/recipe?" + queryStr;
+		var urlStr = "http://192.168.33.10:8080/api/recipe?" + queryStr;
 		//var temp = $http.post(urlStr, queryStr);
 		var temp = $http({
 			method : 'post',
 			url : urlStr
 		});
 		temp.success(function(response, status) {
-			$http.get("http://localhost:8080/api/recipe/" + response).success(function(response, status) {
+			$http.get("http://192.168.33.10:8080/api/recipe/" + response).success(function(response, status) {
 				$scope.searchResults.push(response[0]);
 				$scope.pages = [];
 				for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 12) + 1; i++)
@@ -194,7 +187,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.deleteRecipe = function(ID, name) {
-		var urlStr = "http://localhost:8080/api/recipe/" + ID;
+		var urlStr = "http://192.168.33.10:8080/api/recipe/" + ID;
 		$http.delete(urlStr);
 		var temp = $scope.searchResults.length;
 		for(var i = 0; i < $scope.searchResults.length; i++)
@@ -229,8 +222,51 @@ app.filter('maxnumber', function() {
 
 app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 	//console.log($routeParams);
-	$http.get("http://localhost:8080/api/recipe/" + $routeParams.id).success(function(response, status) {
+	$http.get("http://192.168.33.10:8080/api/recipe/" + $routeParams.id).success(function(response, status) {
 	//console.log(response);
-	$scope.recipedetail = response;
-	})
+		$scope.recipedetail = response;
+		$scope.updatetitle = response[0].title;
+		$scope.updatetime = response[0].time;
+		$scope.updatetags = response[0].tags.join(',');
+		$scope.updateinstuction = response[0].instuctions;
+	});
+	
+	var serialize = function(obj, prefix) {
+	  	var str = [];
+	  	for(var p in obj) {
+	   	 	if (obj.hasOwnProperty(p)) {
+	      		var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+	      		str.push(typeof v == "object" ?
+	        	serialize(v, k) :
+	        	encodeURIComponent(k) + "=" + encodeURIComponent(v));
+	   		 }
+	  	}
+	  return str.join("&");
+	}
+	
+	$scope.updateRecipe = function() {
+		var queryObj = {};
+		queryObj.title = $scope.updatetitle;
+		queryObj.tag = $scope.updatetags.split(',');
+		queryObj.time = $scope.updatetime;
+		queryObj.instructions = $scope.updateinstruction;
+		queryObj.qty = queryObj.unit = queryObj.ingredient = [];
+		for(var i = 0; i < $scope.recipedetail[0].ingredients.length; i++) {
+			queryObj.qty.push($scope.recipedetail[0].ingredients[i].qty);
+			queryObj.unit.push($scope.recipedetail[0].ingredients[i].units);
+			queryObj.ingredient.push($scope.recipedetail[0].ingredients[i].ingredient);
+		}
+		var queryStr = serialize(queryObj);
+		var urlStr = "http://192.168.33.10:8080/api/recipe/" + $routeParams.id + '?' + queryStr;
+		var temp = $http({
+			method : 'PUT',
+			url : urlStr
+		});
+		temp.success(function(response, status) {
+			$scope.recipedetail[0].title = queryObj.title;
+			$scope.recipedetail[0].tags = queryObj.tag;
+			$scope.recipedetail[0].time = queryObj.time;
+			$scope.recipedetail[0].instructions = queryObj.instructions;
+		});
+	}
 });
