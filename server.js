@@ -150,30 +150,30 @@ server.route({
 	handler	:	function(request, response) {
 		var ID = request.params.id;
 		var query = request.query;
-		var updateDoc = Recipe.find().where('_id', ID);
+		var updateDoc = Recipe.findOne().where('_id', ID);
 		query.ingredients = [];
+		/*
 		if ('qty' in query) {
 			for(var i = 0; i < query.qty.length; i++)
 				query.ingredients.push({qty : query.qty[i], units : query.unit[i], ingredient : query.ingredient[i] } );
 		}
-		
+	*/	
+		if (!query.instructions) query.instructions = '';
 		query.tags = [];
 		if ('tag' in query) {
 			for(var i = 0; i < query.tag.length; i++)
 				query.tags[i] = query.tag[i];
 		}
+		query.tag = '';
 		updateDoc.exec(function(err, result) {
 			if (err) {
 				response("Can't find this doc", 404);
 				return console.log(err);
 			}
-			result[0].update(query, {w : 1}, function(err, result) {
-				if (err) {
-					response("Can't update this doc", 404);
-					return console.log(err);
-				}	
-				console.log(result);
-				response("Update succeed", 200);
+			var query2 = result.update({$set : {title: query.title, tags : query.tags, instructions : query.instructions, time : query.time}});
+			query2.exec(function(err, results) {
+				if (err) return console.log(err);
+				response("update succeed", 200);
 			});
 		});
 	}

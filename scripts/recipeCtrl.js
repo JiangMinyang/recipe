@@ -228,7 +228,7 @@ app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 		$scope.updatetitle = response[0].title;
 		$scope.updatetime = response[0].time;
 		$scope.updatetags = response[0].tags.join(',');
-		$scope.updateinstuction = response[0].instuctions;
+		$scope.updateinstruction = response[0].instructions;
 	});
 	
 	var serialize = function(obj, prefix) {
@@ -250,12 +250,14 @@ app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 		queryObj.tag = $scope.updatetags.split(',');
 		queryObj.time = $scope.updatetime;
 		queryObj.instructions = $scope.updateinstruction;
+		/*
 		queryObj.qty = queryObj.unit = queryObj.ingredient = [];
 		for(var i = 0; i < $scope.recipedetail[0].ingredients.length; i++) {
 			queryObj.qty.push($scope.recipedetail[0].ingredients[i].qty);
 			queryObj.unit.push($scope.recipedetail[0].ingredients[i].units);
 			queryObj.ingredient.push($scope.recipedetail[0].ingredients[i].ingredient);
 		}
+		*/
 		var queryStr = serialize(queryObj);
 		var urlStr = "http://192.168.33.10:8080/api/recipe/" + $routeParams.id + '?' + queryStr;
 		var temp = $http({
