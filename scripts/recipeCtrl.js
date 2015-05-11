@@ -32,7 +32,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	//console.log(typeof($scope.addingIngredient) + "11111");
 	$scope.Reset = function() {
 		$scope.title = $scope.tags = $scope.maxTime = '';
-		$http.get("http://192.168.33.10:8080/api/recipe?").success(function(response, status) {
+		$http.get("http://localhost:8080/api/recipe?").success(function(response, status) {
 		//console.log(response);
 		$scope.currentPage = 1;
 		$scope.searchResults = response;
@@ -73,7 +73,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.searchByTag = function(tag) {
-		var urlStr = "http://192.168.33.10:8080/api/recipe?tag=" + tag;
+		var urlStr = "http://localhost:8080/api/recipe?tag=" + tag;
 		$scope.title = '';
 		$scope.maxTime = '';
 		$scope.changeTo(1);
@@ -82,7 +82,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.Search = function() {
-		var urlStr = "http://192.168.33.10:8080/api/recipe?";
+		var urlStr = "http://localhost:8080/api/recipe?";
 		$scope.currentPage = 1;
 		doGetRequest(urlStr);
 	}
@@ -108,7 +108,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	
 	/*
 	$scope.sortByKey = function(key) {
-		var urlStr = "http://192.168.33.10:8080/api/recipe?";
+		var urlStr = "http://localhost:8080/api/recipe?";
 		urlStr = urlStr + "&sort=" + key;
 		$scope.currentPage = 1;
 		doGetRequest(urlStr);
@@ -170,14 +170,14 @@ app.controller('recipeCtrl', function($scope, $http){
 		$scope.addingIngredient.unit = [];
 		$scope.addingIngredient.ingre = [];
 		var queryStr = serialize(queryObj);
-		var urlStr = "http://192.168.33.10:8080/api/recipe?" + queryStr;
+		var urlStr = "http://localhost:8080/api/recipe?" + queryStr;
 		//var temp = $http.post(urlStr, queryStr);
 		var temp = $http({
 			method : 'post',
 			url : urlStr
 		});
 		temp.success(function(response, status) {
-			$http.get("http://192.168.33.10:8080/api/recipe/" + response).success(function(response, status) {
+			$http.get("http://localhost:8080/api/recipe/" + response).success(function(response, status) {
 				$scope.searchResults.push(response[0]);
 				$scope.pages = [];
 				for(var i = 0; i < Math.floor(($scope.searchResults.length - 1)/ 12) + 1; i++)
@@ -187,7 +187,7 @@ app.controller('recipeCtrl', function($scope, $http){
 	}
 	
 	$scope.deleteRecipe = function(ID, name) {
-		var urlStr = "http://192.168.33.10:8080/api/recipe/" + ID;
+		var urlStr = "http://localhost:8080/api/recipe/" + ID;
 		$http.delete(urlStr);
 		var temp = $scope.searchResults.length;
 		for(var i = 0; i < $scope.searchResults.length; i++)
@@ -222,7 +222,7 @@ app.filter('maxnumber', function() {
 
 app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 	//console.log($routeParams);
-	$http.get("http://192.168.33.10:8080/api/recipe/" + $routeParams.id).success(function(response, status) {
+	$http.get("http://localhost:8080/api/recipe/" + $routeParams.id).success(function(response, status) {
 	//console.log(response);
 		$scope.recipedetail = response;
 		$scope.updatetitle = response[0].title;
@@ -259,7 +259,7 @@ app.controller('recipeCtrl2', function($scope, $http, $routeParams) {
 		}
 		*/
 		var queryStr = serialize(queryObj);
-		var urlStr = "http://192.168.33.10:8080/api/recipe/" + $routeParams.id + '?' + queryStr;
+		var urlStr = "http://localhost:8080/api/recipe/" + $routeParams.id + '?' + queryStr;
 		var temp = $http({
 			method : 'PUT',
 			url : urlStr
